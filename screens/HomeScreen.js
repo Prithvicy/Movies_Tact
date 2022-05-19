@@ -1,11 +1,13 @@
 import { View, Text,SafeAreaView ,StyleSheet } from 'react-native'
 import React from 'react'
 import Header from '../Components/home/Header'
+import Stories from '../Components/home/Stories'
 
 const HomeScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
         <Header/>
+        <Stories/>
     </SafeAreaView>
   )
 }
