@@ -20,8 +20,8 @@ export const POSTS= [
     {
         imageUrl: require("../assets/p1.jpeg"),
         user: USERS[1].user,
-        likes:7870 ,
-        caption :"boom gg",
+        likes:9999 ,
+        caption :"9999 likere fr hahahahah",
         profile_picture : USERS[1].image,
         comments: [
             {

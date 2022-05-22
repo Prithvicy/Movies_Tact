@@ -10,14 +10,14 @@ export default function Header() {
       <TouchableOpacity>
         <Image
           style={styles.logo}
-          source={require("../../assets/bg-removebg-preview.png")}
+          source={require("../../assets/mlogo.gif")}
         />
       </TouchableOpacity>
       <View style={styles.iconsContainer}>
         <TouchableOpacity>
           <Image
             style={{
-              borderColor: "red",
+              borderColor: "white",
             }}
             source={require("../../assets/homelogo.png")}
           />
@@ -26,16 +26,16 @@ export default function Header() {
           <Feather
             style={styles.icon}
             name="plus-square"
-            size={24}
-            color="red"
+            size={30}
+            color="white"
           />
         </TouchableOpacity>
         <TouchableOpacity>
           <Entypo
             style={styles.icon}
             name="heart-outlined"
-            size={24}
-            color="red"
+            size={30}
+            color="white"
           />
         </TouchableOpacity>
         <TouchableOpacity>
@@ -45,8 +45,8 @@ export default function Header() {
           <FontAwesome
             style={styles.icon}
             name="send-o"
-            size={24}
-            color="red"
+            size={30}
+            color="white"
           />
         </TouchableOpacity>
       </View>
@@ -56,7 +56,9 @@ export default function Header() {
 const styles = StyleSheet.create({
   logo: {
     width: 100,
-    height: 50,
+    height: 38,
+    marginLeft:-20,
+    marginBottom:15,
     resizeMode: "contain",
   },
   container: {
@@ -67,27 +69,28 @@ const styles = StyleSheet.create({
   },
   iconsContainer: {
     flexDirection: "row",
+    justifyContent:"space-evenly"
   },
   icon: {
     width: 30,
-    color: "red",
+    color: "white",
     height: 30,
     marginLeft: 10,
   },
   unreadBadge: {
-    backgroundColor: "#B6FFCE",
+    backgroundColor: "orange",
     position: "absolute",
     top: -10,
-    right: 15,
+    right: 5,
     alignItems: "center",
     height: 18,
     width: 25,
 
     borderRadius: 50,
-    zIndex:10,
+    zIndex: 10,
   },
-  unreadBadgeText:{
-      color:"black",
-      fontWeight:"600",
-  }
+  unreadBadgeText: {
+    color: "black",
+    fontWeight: "600",
+  },
 });

@@ -1,14 +1,21 @@
-import { View, Text, Image, StyleSheet ,TouchableOpacity } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import { Divider } from "react-native-elements";
-
+import { FontAwesome5 } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 const Post = ({ post }) => {
   return (
     <View style={{ marginBottom: 30 }}>
       <Divider width={1} orientation="vertical" />
       <PostHeader post={post} />
       <PostImage post={post} />
-      <PostFooter />
+      <View style={{ marginHorizontal: 15, marginTop: 10 }}>
+        <PostFooter />
+        <Likes post={post} />
+        <Caption post={post} />
+        <CommentSection post={post} />
+        <Comments post={post} />
+      </View>
     </View>
   );
 };
@@ -34,7 +41,9 @@ const PostHeader = ({ post }) => (
         {post.user}
       </Text>
     </View>
-    <Text style={{ color: "white", fontWeight: "900" }}>...</Text>
+    <TouchableOpacity>
+      <Entypo name="dots-three-horizontal" size={20} color="white" />
+    </TouchableOpacity>
   </View>
 );
 
@@ -71,13 +80,63 @@ const postFooterIcons = [
   },
 ];
 const PostFooter = () => (
-  <Icon imgStyle={styles.footerIcon} imgUrl={postFooterIcons[1].imgUrl} />
+  <View style={{ flexDirection: "row" }}>
+    <View style={styles.leftFooterIcons}>
+      <Icon imgStyle={styles.footerIcon} imgUrl={postFooterIcons[0].imgUrl} />
+      <Icon imgStyle={styles.footerIcon} imgUrl={postFooterIcons[1].imgUrl} />
+      <Icon imgStyle={styles.footerIcon} imgUrl={postFooterIcons[2].imgUrl} />
+    </View>
+    <View style={styles.rightFooterIconsContainer}>
+      <TouchableOpacity>
+        <FontAwesome5 name="bookmark" size={24} color="white" />
+      </TouchableOpacity>
+    </View>
+  </View>
 );
-const Icon = ({imgStyle, imgUrl}) => (
+const Likes = ({ post }) => (
+  <View style={styles.likesView}>
+    <Text style={{ color: "white", fontWeight: "600" }}>
+      {post.likes.toLocaleString("en")} likes
+    </Text>
+  </View>
+);
+const Icon = ({ imgStyle, imgUrl }) => (
   <TouchableOpacity>
     <Image source={imgUrl} style={imgStyle} />
   </TouchableOpacity>
 );
+
+const Caption = ({ post }) => (
+  <View style={{ marginTop: 5 }}>
+    <Text style={{ color: "white" }}>
+      <Text style={{ fontWeight: "900" }}>{post.user} </Text>
+      <Text>{post.caption}</Text>
+    </Text>
+  </View>
+);
+
+const CommentSection = ({ post }) => (
+  <View style={{ marginTop: 5 }}>
+    {!!post.comments.length && ( //single negation 
+      <Text style={{ color: "gray" }}>
+        View{post.comments.length > 1 ? " all " : ""} {post.comments.length}{" "}
+        {post.comments.length > 1 ? "comments" : "comment"}
+      </Text>
+    )}
+  </View>
+);
+const Comments = ({post}) => (
+  <>
+    {post.comments.map((comment, index) => (
+      <View key={index}>
+          <Text style={{color:"white"}}>
+            <Text style={{fontWeight: "900"}}>{comment.user}</Text>
+               {' '} {comment.comment}
+          </Text>
+      </View>
+    ))}
+  </>
+)
 const styles = StyleSheet.create({
   story: {
     marginTop: 10,
@@ -91,6 +150,19 @@ const styles = StyleSheet.create({
   footerIcon: {
     width: 33,
     height: 33,
+  },
+  leftFooterIcons: {
+    flexDirection: "row",
+    width: "32%",
+    justifyContent: "space-between",
+  },
+  rightFooterIconsContainer: {
+    flex: 1,
+    alignItems: "flex-end",
+  },
+  likesView: {
+    flexDirection: "row",
+    marginTop: 4,
   },
 });
 
