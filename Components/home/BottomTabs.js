@@ -32,13 +32,27 @@ export const bottomTabIcons = [
 const BottomTabs = ({ icons }) => {
   const [activeTab, setActiveTab] = useState("Home");
   const Icon = ({ icon }) => (
-    <TouchableOpacity>
-      <Image source={icon.active} style={styles.icon} />
+    <TouchableOpacity onPress={() => setActiveTab(icon.name)}>
+      <Image
+        source={activeTab === icon.name ? icon.active : icon.inactive}
+        //the current one that is clicked if it matched the icon name then make it active else render inactive
+        style={[
+          styles.icon,
+          icon.name === "Profile" ? styles.profilePic() : null,
+          activeTab === "Profile" && icon.name === activeTab
+            ? styles.profilePic(activeTab)
+            : null,
+        ]}
+      />
     </TouchableOpacity>
   );
   return (
     <View style={styles.wrapper}>
-    <Divider width={1} orientation="vertical" style={{borderColor:"white"}}/>
+      <Divider
+        width={1}
+        orientation="vertical"
+        style={{ borderColor: "white" }}
+      />
       <View style={styles.container}>
         {icons.map((icon, index) => (
           <Icon key={index} icon={icon} />
@@ -49,7 +63,13 @@ const BottomTabs = ({ icons }) => {
 };
 
 const styles = StyleSheet.create({
-  wrapper: {},
+  wrapper: {
+    position: "absolute",
+    zIndex: 999,
+    bottom: "3%",
+    width: "100%",
+    backgroundColor: "#000",
+  },
   icon: {
     width: 30,
     height: 30,
@@ -61,6 +81,11 @@ const styles = StyleSheet.create({
     height: 50,
     paddingTop: 10,
   },
+  profilePic: (activeTab = " ") => ({
+    borderRadius: 50,
+    borderWidth: activeTab === "Profile" ? 2 : 0,
+    borderColor: "#fff",
+  }),
 });
 
 export default BottomTabs;
