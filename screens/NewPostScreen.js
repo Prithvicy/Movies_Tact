@@ -1,13 +1,11 @@
-import { View, Text, SafeAreaView } from "react-native";
-import React from "react";
-import AddNewPost from "../Components/newPost/AddNewPost";
-import FormicPostUploader from "../Components/newPost/FormicPostUploader";
+import React from 'react';
+import {SafeAreaView} from 'react-native';
+import AddNewPost from '../Components/newPost/AddNewPost';
 
-const NewPostScreen = () => {
+const NewPostScreen = ({navigation}) => {
   return (
-    <SafeAreaView style={{backgroundColor: "black" , flex:1}}>
-    <AddNewPost/>
-    <FormicPostUploader/>
+    <SafeAreaView style={{backgroundColor: 'black', flex: 1}}>
+      <AddNewPost navigation={navigation} />
     </SafeAreaView>
   );
 };

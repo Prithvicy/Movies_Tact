@@ -1,26 +1,27 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
-const Header = () => (
+import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import FormicPostUploader from "./FormicPostUploader";
+
+const AddNewPost = ({ navigation }) => (
+  <View styles={styles.container}>
+    <Header navigation={navigation} />
+    <FormicPostUploader navigation={navigation} />
+  </View>
+);
+
+const Header = ({ navigation }) => (
   <View style={styles.headerContainer}>
-    <TouchableOpacity>
+    <TouchableOpacity onPress={() => navigation.goBack()}>
       <Image
         source={require("../../assets/newPost/back.png")}
         style={{ width: 30, height: 30 }}
       />
     </TouchableOpacity>
-    <Text style={styles.headerText}>AddNewPost</Text>
+    <Text style={styles.headerText}>NEW POST</Text>
     <Text></Text>
   </View>
 );
 
-const AddNewPost = () => {
-  return (
-    <View style={styles.container}>
-      <Header />
-      {/* formic post uploader */}
-    </View>
-  );
-};
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 10,
@@ -31,9 +32,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   headerText: {
-    color: "#fff",
+    color: "white",
     fontWeight: "700",
     fontSize: 20,
+    marginRight: 25,
   },
 });
 

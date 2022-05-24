@@ -4,14 +4,11 @@ import { Feather } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import Position from "react-native/Libraries/Components/Touchable/Position";
-export default function Header() {
+const Header = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity>
-        <Image
-          style={styles.logo}
-          source={require("../../assets/mlogo.gif")}
-        />
+        <Image style={styles.logo} source={require("../../assets/mlogo.gif")} />
       </TouchableOpacity>
       <View style={styles.iconsContainer}>
         <TouchableOpacity>
@@ -22,7 +19,7 @@ export default function Header() {
             source={require("../../assets/homelogo.png")}
           />
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.push("NewPostScreen")}>
           <Feather
             style={styles.icon}
             name="plus-square"
@@ -52,13 +49,15 @@ export default function Header() {
       </View>
     </View>
   );
-}
+};
+
+export default Header;
 const styles = StyleSheet.create({
   logo: {
     width: 100,
     height: 38,
-    marginLeft:-20,
-    marginBottom:15,
+    marginLeft: -20,
+    marginBottom: 15,
     resizeMode: "contain",
   },
   container: {
@@ -69,7 +68,7 @@ const styles = StyleSheet.create({
   },
   iconsContainer: {
     flexDirection: "row",
-    justifyContent:"space-evenly"
+    justifyContent: "space-evenly",
   },
   icon: {
     width: 30,
