@@ -12,6 +12,8 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import Validator from "email-validator";
 //firebase import
+import {firebase, db} from '../../firebase';
+
 
 const LoginForm = ({ navigation }) => {
   const LoginFormSchema = Yup.object().shape({
@@ -24,11 +26,22 @@ const LoginForm = ({ navigation }) => {
   const onLogin = async (email, password) => {
     try {
       const authUser = await firebase
-        .auth().signInWithEmailAndPassword(email, password);
-      console.log("firebase login successful", email, password);
-      navigation.navigate("Home");
+        .auth()
+        .signInWithEmailAndPassword(email, password);
+      console.log('firebase signup successful', email, password);
     } catch (error) {
-      Alert.alert("🔥 Jabroni...", error.message);
+      Alert.alert(
+        'Prith says',
+        error.message + '\n\n... baka theres an syntax error!!!',
+        [
+          {
+            text: 'OK',
+            onPress: () => console.log('OK Pressed'),
+            style: 'cancel',
+          },
+          {text: 'Sign Up', onPress: () => navigation.push('SignUpScreen')},
+        ],
+      );
     }
   };
 

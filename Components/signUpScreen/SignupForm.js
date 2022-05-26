@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,32 +7,50 @@ import {
   TouchableOpacity,
   Pressable,
   Alert,
-} from "react-native";
+} from 'react-native';
 
-import { Formik } from "formik";
-import * as Yup from "yup";
-import Validator from "email-validator";
+import {Formik} from 'formik';
+import * as Yup from 'yup';
+import Validator from 'email-validator';
+import {firebase, db} from '../../firebase';
 
-const SignupForm = ({ navigation }) => {
+const SignupForm = ({navigation}) => {
   const SignupFormSchema = Yup.object().shape({
-    email: Yup.string().email().required("An email is required"),
-    username: Yup.string().required().min(2, "A username is required"),
+    email: Yup.string().email().required('An email is required'),
+    username: Yup.string().required().min(2, 'A username is required'),
     password: Yup.string()
       .required()
-      .min(8, "Your password has to have at least 8 characteres"),
+      .min(8, 'Your password has to have at least 8 characteres'),
   });
 
+
+
+  const getRandomProfilePicture = async () => {
+    const response = await fetch('https://randomuser.me/api/');
+    const data = await response.json();
+    return data.results[0].picture.large;
+  };
+
+  const onSignup = async (email, username, password) => {
+    try {
+      const authUser = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
+      console.log('firebase signup successful', email, password, username);
+    } catch (error) {
+      Alert.alert('uff yaar', error.message);
+    }
+  };
   return (
     <View style={styles.wrapper}>
       <Formik
-        initialValues={{ email: "", username: "", password: "" }}
-        onSubmit={(values) => {
+        initialValues={{email: '', username: '', password: ''}}
+        onSubmit={values => {
           onSignup(values.email, values.username, values.password);
         }}
         validationSchema={SignupFormSchema}
-        validateOnMount={true}
-      >
-        {({ handleChange, handleBlur, handleSubmit, values, isValid }) => (
+        validateOnMount={true}>
+        {({handleChange, handleBlur, handleSubmit, values, isValid}) => (
           <>
             <View
               style={[
@@ -40,11 +58,10 @@ const SignupForm = ({ navigation }) => {
                 {
                   borderColor:
                     values.email.length < 1 || Validator.validate(values.email)
-                      ? "black"
-                      : "red",
+                      ? '#ccc'
+                      : 'red',
                 },
-              ]}
-            >
+              ]}>
               <TextInput
                 placeholderTextColor="#444"
                 placeholder="Phone number, username or email"
@@ -52,8 +69,8 @@ const SignupForm = ({ navigation }) => {
                 textContentType="emailAddress"
                 autoFocus={true}
                 autoCorrect={false}
-                onChangeText={handleChange("email")}
-                onBlur={handleBlur("email")}
+                onChangeText={handleChange('email')}
+                onBlur={handleBlur('email')}
                 value={values.email}
               />
             </View>
@@ -63,18 +80,17 @@ const SignupForm = ({ navigation }) => {
                 {
                   borderColor:
                     1 > values.username.length || values.username.length > 2
-                      ? "black"
-                      : "red",
+                      ? '#ccc'
+                      : 'red',
                 },
-              ]}
-            >
+              ]}>
               <TextInput
                 placeholderTextColor="#444"
                 placeholder="Username"
                 autoCapitalize="none"
                 textContentType="username"
-                onChangeText={handleChange("username")}
-                onBlur={handleBlur("username")}
+                onChangeText={handleChange('username')}
+                onBlur={handleBlur('username')}
                 value={values.username}
                 autoCorrect={false}
                 autoComplete="off"
@@ -86,11 +102,10 @@ const SignupForm = ({ navigation }) => {
                 {
                   borderColor:
                     1 > values.password.length || values.password.length > 7
-                      ? "black"
-                      : "red",
+                      ? '#ccc'
+                      : 'red',
                 },
-              ]}
-            >
+              ]}>
               <TextInput
                 placeholderTextColor="#444"
                 placeholder="Password"
@@ -98,8 +113,8 @@ const SignupForm = ({ navigation }) => {
                 secureTextEntry={true}
                 autoCorrect={false}
                 textContentType="password"
-                onChangeText={handleChange("password")}
-                onBlur={handleBlur("password")}
+                onChangeText={handleChange('password')}
+                onBlur={handleBlur('password')}
                 value={values.password}
               />
             </View>
@@ -107,16 +122,13 @@ const SignupForm = ({ navigation }) => {
               titleSize={20}
               style={styles.button(isValid)}
               onPress={handleSubmit}
-              disabled={!isValid}
-            >
+              disabled={!isValid}>
               <Text style={styles.buttonText}>Sign Up</Text>
             </Pressable>
             <View style={styles.loginContainer}>
-              <Text style={{ fontWeight: "600" }}>
-                Already have an account?
-              </Text>
-              <TouchableOpacity onPress={() => navigation.push("LoginScreen")}>
-                <Text style={{ color: "#ff0080" }}> Log In</Text>
+              <Text style={{fontWeight: '600'}}>Already have an account?</Text>
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Text style={{color: '#6BB0F5'}}> Log In</Text>
               </TouchableOpacity>
             </View>
           </>
@@ -135,27 +147,27 @@ const styles = StyleSheet.create({
   inputField: {
     borderRadius: 4,
     padding: 12,
-    backgroundColor: "#FAFAFA",
+    backgroundColor: '#FAFAFA',
     marginBottom: 10,
     borderWidth: 1,
   },
   loginContainer: {
-    flexDirection: "row",
-    width: "100%",
-    justifyContent: "center",
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'center',
     marginTop: 50,
   },
-  button: (isValid) => ({
-    backgroundColor: isValid ? "#0096F5" : "#9ACAF7",
-    alignItems: "center",
-    justifyContent: "center",
+  button: isValid => ({
+    backgroundColor: isValid ? '#0096F5' : '#9ACAF7',
+    alignItems: 'center',
+    justifyContent: 'center',
     minHeight: 42,
     borderRadius: 4,
     marginTop: 50,
   }),
   buttonText: {
-    fontWeight: "600",
-    color: "#fff",
+    fontWeight: '600',
+    color: '#fff',
     fontSize: 20,
   },
 });
