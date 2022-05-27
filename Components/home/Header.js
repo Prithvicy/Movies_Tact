@@ -3,11 +3,19 @@ import React from "react";
 import { Feather } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
-import Position from "react-native/Libraries/Components/Touchable/Position";
+import { firebase } from "../../firebase";
+const handleSignOut = async() => {
+  try {
+     await firebase.auth().signOut().then(() => console.log("byeeeee signed out")); 
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const Header = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={handleSignOut}>
         <Image style={styles.logo} source={require("../../assets/mlogo.gif")} />
       </TouchableOpacity>
       <View style={styles.iconsContainer}>

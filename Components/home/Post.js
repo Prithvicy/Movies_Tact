@@ -3,14 +3,42 @@ import React from "react";
 import { Divider } from "react-native-elements";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
+import { firebase ,db } from "../../firebase";
 const Post = ({ post }) => {
+  const handleLike = (post) => {
+    const currentLikeStatus = !post.likes_by_users.includes(
+      //! = its not what it currently is
+      firebase.auth().currentUser.email
+    );
+
+    db.collection("users")
+      .doc(post.owner_email)
+      .collection("posts")
+      .doc(post.id)
+      .update({
+        likes_by_users: currentLikeStatus
+          ? firebase.firestore.FieldValue.arrayUnion(
+              firebase.auth().currentUser.email
+            )
+          : firebase.firestore.FieldValue.arrayRemove(
+              // almost like dot push
+              firebase.auth().currentUser.email
+            ),
+      })
+      .then(() => {
+        console.log("Document successfully update");
+      })
+      .catch((error) => {
+        console.error("Error update document: ", error);
+      });
+  };
   return (
     <View style={{ marginBottom: 30 }}>
       <Divider width={1} orientation="vertical" />
       <PostHeader post={post} />
       <PostImage post={post} />
       <View style={{ marginHorizontal: 15, marginTop: 10 }}>
-        <PostFooter />
+        <PostFooter post={post} handleLike={handleLike} />
         <Likes post={post} />
         <Caption post={post} />
         <CommentSection post={post} />
@@ -29,7 +57,7 @@ const PostHeader = ({ post }) => (
     }}
   >
     <View style={{ flexDirection: "row", alignItems: "center" }}>
-      <Image style={styles.story} source={post.profile_picture} />
+      <Image style={styles.story} source={{ uri: post.profile_picture }} />
       <Text
         style={{
           color: "white",
@@ -55,7 +83,7 @@ const PostImage = ({ post }) => (
     }}
   >
     <Image
-      source={post.imageUrl}
+      source={{ uri: post.imageUrl }}
       style={{ height: "100%", resizeMode: "cover" }}
     />
   </View>
@@ -79,24 +107,34 @@ const postFooterIcons = [
     imgUrl: require("../../assets/footerIcons/save.png"),
   },
 ];
-const PostFooter = () => (
+const PostFooter = ({ handleLike, post }) => (
   <View style={{ flexDirection: "row" }}>
     <View style={styles.leftFooterIcons}>
-      <Icon imgStyle={styles.footerIcon} imgUrl={postFooterIcons[0].imgUrl} />
+      <TouchableOpacity onPress={() => handleLike(post)}>
+        <Image
+          style={styles.footerIcon}
+          source={
+            post.likes_by_users.includes(firebase.auth().currentUser.email)
+              ? postFooterIcons[0].likedImageUrl
+              : postFooterIcons[0].imgUrl
+          }
+        />
+      </TouchableOpacity>
       <Icon imgStyle={styles.footerIcon} imgUrl={postFooterIcons[1].imgUrl} />
-      <Icon imgStyle={styles.footerIcon} imgUrl={postFooterIcons[2].imgUrl} />
+      <Icon
+        imgStyle={[styles.footerIcon, styles.shareIcon]}
+        imgUrl={postFooterIcons[2].imgUrl}
+      />
     </View>
     <View style={styles.rightFooterIconsContainer}>
-      <TouchableOpacity>
-        <FontAwesome5 name="bookmark" size={24} color="white" />
-      </TouchableOpacity>
+      <Icon imgStyle={styles.footerIcon} imgUrl={postFooterIcons[3].imgUrl} />
     </View>
   </View>
 );
 const Likes = ({ post }) => (
   <View style={styles.likesView}>
     <Text style={{ color: "white", fontWeight: "600" }}>
-      {post.likes.toLocaleString("en")} likes
+      {post.likes_by_users.length.toLocaleString("en")} likes
     </Text>
   </View>
 );
@@ -117,7 +155,7 @@ const Caption = ({ post }) => (
 
 const CommentSection = ({ post }) => (
   <View style={{ marginTop: 5 }}>
-    {!!post.comments.length && ( //single negation 
+    {!!post.comments.length && ( //single negation
       <Text style={{ color: "gray" }}>
         View{post.comments.length > 1 ? " all " : ""} {post.comments.length}{" "}
         {post.comments.length > 1 ? "comments" : "comment"}
@@ -125,18 +163,18 @@ const CommentSection = ({ post }) => (
     )}
   </View>
 );
-const Comments = ({post}) => (
+const Comments = ({ post }) => (
   <>
     {post.comments.map((comment, index) => (
       <View key={index}>
-          <Text style={{color:"white"}}>
-            <Text style={{fontWeight: "900"}}>{comment.user}</Text>
-               {' '} {comment.comment}
-          </Text>
+        <Text style={{ color: "white" }}>
+          <Text style={{ fontWeight: "900" }}>{comment.user}</Text>{" "}
+          {comment.comment}
+        </Text>
       </View>
     ))}
   </>
-)
+);
 const styles = StyleSheet.create({
   story: {
     marginTop: 10,
