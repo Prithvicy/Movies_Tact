@@ -3,7 +3,7 @@ import React from "react";
 import { Divider } from "react-native-elements";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
-import { firebase ,db } from "../../firebase";
+import { firebase, db } from "../../firebase";
 const Post = ({ post }) => {
   const handleLike = (post) => {
     const currentLikeStatus = !post.likes_by_users.includes(
@@ -26,7 +26,7 @@ const Post = ({ post }) => {
             ),
       })
       .then(() => {
-        console.log("Document successfully update");
+        console.log("Post changes updated");
       })
       .catch((error) => {
         console.error("Error update document: ", error);
@@ -127,7 +127,7 @@ const PostFooter = ({ handleLike, post }) => (
       />
     </View>
     <View style={styles.rightFooterIconsContainer}>
-      <Icon imgStyle={styles.footerIcon} imgUrl={postFooterIcons[3].imgUrl} />
+    <FontAwesome5 imgStyle={styles.footerIcon} name="bookmark" size={24} color="white" />
     </View>
   </View>
 );

@@ -38,9 +38,9 @@ const BottomTabs = ({ icons }) => {
         //the current one that is clicked if it matched the icon name then make it active else render inactive
         style={[
           styles.icon,
-          icon.name === "Profile" ? styles.profilePic() : null,
-          activeTab === "Profile" && icon.name === activeTab
-            ? styles.profilePic(activeTab)
+          icon.name === "Profile" ? styles.profilePic() : null, //square to circle
+          activeTab === "Profile" && icon.name === activeTab 
+            ? styles.profilePic(activeTab) //
             : null,
         ]}
       />

@@ -6,7 +6,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { firebase } from "../../firebase";
 const handleSignOut = async() => {
   try {
-     await firebase.auth().signOut().then(() => console.log("byeeeee signed out")); 
+     await firebase.auth().signOut().then(() => console.log("byeee signed out")); 
   } catch (error) {
     console.log(error);
   }
