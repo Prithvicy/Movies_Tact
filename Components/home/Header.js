@@ -16,7 +16,7 @@ const Header = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={handleSignOut}>
-        <Image style={styles.logo} source={require("../../assets/mlogo.gif")} />
+        <Image style={styles.logo} source={require("../../assets/Instagram-dark-796x398.png")} />
       </TouchableOpacity>
       <View style={styles.iconsContainer}>
         <TouchableOpacity>
@@ -63,7 +63,7 @@ export default Header;
 const styles = StyleSheet.create({
   logo: {
     width: 100,
-    height: 38,
+    height: 50,
     marginLeft: -20,
     marginBottom: 15,
     resizeMode: "contain",

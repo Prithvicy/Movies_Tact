@@ -7,8 +7,8 @@ const LoginScreen = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.logoContainer}>
         <Image
-          style={{ height: 100, width: 100}}
-          source={require("../assets/mlogo.gif")}
+          style={{ height: 100, width: 100 , borderRadius:25}}
+          source={require("../assets/final.jpeg")}
         />
       </View>
       <LoginForm navigation={navigation} />

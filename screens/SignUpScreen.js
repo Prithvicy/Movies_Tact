@@ -1,9 +1,9 @@
-import React from 'react';
-import {StyleSheet, Image, View} from 'react-native';
-import SignupForm from '../Components/signUpScreen/SignupForm';
-const MOVIE_LOGO = require('../assets/mlogo.gif');
+import React from "react";
+import { StyleSheet, Image, View } from "react-native";
+import SignupForm from "../Components/signUpScreen/SignupForm";
+const MOVIE_LOGO = require("../assets/final.jpeg");
 
-const SignupScreen = ({navigation}) => {
+const SignupScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
@@ -17,17 +17,18 @@ const SignupScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     paddingTop: 50,
     marginHorizontal: 12,
   },
   logoContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 60,
   },
   logo: {
     height: 100,
     width: 100,
+    borderRadius: 25,
   },
 });
 
